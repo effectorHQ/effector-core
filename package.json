@@ -1,0 +1,40 @@
+{
+  "name": "@effectorhq/core",
+  "version": "0.1.0",
+  "description": "Shared kernel for the effector ecosystem — TOML parser, SKILL.md parser, type checker, schema validator",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./toml": "./src/toml-parser.js",
+    "./skill": "./src/skill-parser.js",
+    "./types": "./src/type-checker.js",
+    "./schema": "./src/schema-validator.js",
+    "./compile": "./src/compiler-targets.js"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "lint": "node --check src/*.js"
+  },
+  "keywords": [
+    "effector",
+    "ai-agent",
+    "capability-ir",
+    "type-system",
+    "toml-parser",
+    "shared-kernel"
+  ],
+  "author": "effectorHQ Contributors",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/effectorHQ/effector-core.git"
+  },
+  "homepage": "https://github.com/effectorHQ/effector-core",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "src/"
+  ]
+}
