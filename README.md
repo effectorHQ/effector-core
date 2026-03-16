@@ -2,10 +2,10 @@
 
 [![npm version](https://img.shields.io/npm/v/@effectorhq/core.svg)](https://www.npmjs.com/package/@effectorhq/core)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+<a href="https://awesome.re"><img src="https://awesome.re/badge.svg" alt="Awesome"></a>
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org)
 [![Zero Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](#zero-dependencies)
 [![Tests](https://img.shields.io/badge/tests-102%20passing-brightgreen.svg)](#)
-<a href="https://awesome.re"><img src="https://awesome.re/badge.svg" alt="Awesome"></a>
 
 **The standard toolkit for typed AI agent tool interoperability.**
 
