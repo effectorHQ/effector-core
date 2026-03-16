@@ -8,9 +8,11 @@
 
 **The standard toolkit for typed AI agent tool interoperability.**
 
-**Shared kernel for [effectorHQ](https://github.com/effectorHQ)**
+**Shared kernel for [effectorHQ](https://github.com/effectorHQ) — TOML/SKILL parser, type checker, schema validator; one impl for compose, graph, skill-lint, MCP**
 
-Parse, validate, type-check, and compile AI agent tool definitions — zero dependencies, 36 built-in types, 4+ compile targets.
+Parse, validate, type-check, and compile AI agent tool definitions.
+
+Zero dependencies, 36 built-in types, 4+ compile targets.
 
 ---
 
