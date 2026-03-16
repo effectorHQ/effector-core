@@ -24,10 +24,12 @@
  * Parse a SKILL.md file into frontmatter and body.
  *
  * @param {string} content - Full SKILL.md file content
+ * @param {string} [filePath] - Optional file path for error messages
  * @returns {ParsedSkill}
  */
-export function parseSkillFile(content) {
+export function parseSkillFile(content, filePath) {
   const lines = content.split('\n');
+  const loc = filePath ? ` (${filePath})` : '';
 
   if (!lines[0].startsWith('---')) {
     return {
@@ -35,7 +37,7 @@ export function parseSkillFile(content) {
       body: content,
       parsed: {},
       valid: false,
-      error: 'SKILL.md must start with --- (YAML frontmatter delimiter)',
+      error: `SKILL.md must start with --- (YAML frontmatter delimiter)${loc}`,
     };
   }
 
@@ -53,7 +55,7 @@ export function parseSkillFile(content) {
       body: content,
       parsed: {},
       valid: false,
-      error: 'SKILL.md must close frontmatter with --- delimiter',
+      error: `SKILL.md must close frontmatter with --- delimiter${loc}`,
     };
   }
 
@@ -185,6 +187,15 @@ function stripQuotes(val) {
       (val.startsWith("'") && val.endsWith("'"))) {
     return val.slice(1, -1);
   }
+  return coerceValue(val);
+}
+
+function coerceValue(val) {
+  if (val === 'true') return true;
+  if (val === 'false') return false;
+  if (val === 'null' || val === '~') return null;
+  if (/^-?\d+$/.test(val)) return parseInt(val, 10);
+  if (/^-?\d+\.\d+$/.test(val)) return parseFloat(val);
   return val;
 }
 

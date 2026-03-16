@@ -53,6 +53,27 @@ function extractArrayField(content, key) {
     .filter(Boolean);
 }
 
+// ─── Section Extraction ──────────────────────────────────────
+
+/**
+ * Extract the content of a TOML section (text between [header] and next [header]).
+ * Returns the full content if the section header is not found (for backward compat).
+ *
+ * @param {string} content - Full TOML file content
+ * @param {string} header - Section header, e.g. "effector" or "effector.interface"
+ * @returns {string} Content scoped to that section
+ */
+function extractSection(content, header) {
+  const escaped = header.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const pattern = new RegExp(`^\\[${escaped}\\]\\s*$`, 'm');
+  const match = pattern.exec(content);
+  if (!match) return '';
+
+  const start = match.index + match[0].length;
+  const nextSection = content.indexOf('\n[', start);
+  return nextSection === -1 ? content.slice(start) : content.slice(start, nextSection);
+}
+
 // ─── Main Parser ─────────────────────────────────────────────
 
 /**
@@ -62,33 +83,41 @@ function extractArrayField(content, key) {
  * @property {string|null} type
  * @property {string|null} description
  * @property {{ input: string|null, output: string|null, context: string[], nondeterminism: string|null, idempotent: boolean|null, tokenBudget: number|null, latencyP50: number|null }} interface
- * @property {{ network: boolean, subprocess: boolean }} permissions
+ * @property {{ network: boolean, subprocess: boolean, envRead: string[], envWrite: string[], filesystem: string[] }} permissions
  */
 
 /**
  * Parse an effector.toml file into an EffectorDef.
+ * Section-aware: fields are extracted only from their correct [section].
  *
  * @param {string} content - Raw effector.toml content
  * @returns {EffectorDef}
  */
 export function parseEffectorToml(content) {
+  const root = extractSection(content, 'effector');
+  const iface = extractSection(content, 'effector.interface');
+  const perms = extractSection(content, 'effector.permissions');
+
   return {
-    name: extractField(content, 'name'),
-    version: extractField(content, 'version'),
-    type: extractField(content, 'type'),
-    description: extractField(content, 'description'),
+    name: extractField(root, 'name'),
+    version: extractField(root, 'version'),
+    type: extractField(root, 'type'),
+    description: extractField(root, 'description'),
     interface: {
-      input: extractField(content, 'input'),
-      output: extractField(content, 'output'),
-      context: extractArrayField(content, 'context'),
-      nondeterminism: extractField(content, 'nondeterminism'),
-      idempotent: extractBoolField(content, 'idempotent') || null,
-      tokenBudget: extractIntField(content, 'token-budget'),
-      latencyP50: extractIntField(content, 'latency-p50'),
+      input: extractField(iface, 'input'),
+      output: extractField(iface, 'output'),
+      context: extractArrayField(iface, 'context'),
+      nondeterminism: extractField(iface, 'nondeterminism'),
+      idempotent: extractBoolField(iface, 'idempotent') || null,
+      tokenBudget: extractIntField(iface, 'token-budget'),
+      latencyP50: extractIntField(iface, 'latency-p50'),
     },
     permissions: {
-      network: extractBoolField(content, 'network'),
-      subprocess: extractBoolField(content, 'subprocess'),
+      network: extractBoolField(perms, 'network'),
+      subprocess: extractBoolField(perms, 'subprocess'),
+      envRead: extractArrayField(perms, 'env-read'),
+      envWrite: extractArrayField(perms, 'env-write'),
+      filesystem: extractArrayField(perms, 'filesystem'),
     },
   };
 }

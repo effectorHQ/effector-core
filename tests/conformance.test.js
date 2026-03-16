@@ -90,7 +90,7 @@ test('conformance: conditional — all branches must type-check', () => {
 });
 
 test('conformance: isKnownType consistent across both engines', async () => {
-  const { isKnownType } = await import('../../effector-core/src/type-checker.js');
+  const { isKnownType } = await import('../src/type-checker.js');
 
   // Both compose and graph should use the same type catalog
   assert.strictEqual(isKnownType('CodeDiff'), true);
