@@ -8,6 +8,8 @@
 
 **The standard toolkit for typed AI agent tool interoperability.**
 
+**Shared kernel for [effectorHQ](https://github.com/effectorHQ)**
+
 Parse, validate, type-check, and compile AI agent tool definitions — zero dependencies, 36 built-in types, 4+ compile targets.
 
 ---
