@@ -9,7 +9,44 @@
  *   openai-agents → OpenAI Agents FunctionTool definition
  *   langchain     → LangChain StructuredTool Python class
  *   json          → Raw effector IR (passthrough)
+ *
+ * Custom targets can be registered via registerTarget().
  */
+
+import { EffectorError, COMPILE_TARGET_UNKNOWN } from './errors.js';
+
+// ─── Plugin Registry ─────────────────────────────────────────
+
+const _customTargets = new Map();
+
+/**
+ * Register a custom compile target.
+ * @param {string} name - Target name
+ * @param {Function} compileFn - (effectorDef) => string
+ * @param {{ description?: string, format?: string }} [options]
+ */
+export function registerTarget(name, compileFn, options = {}) {
+  if (typeof name !== 'string' || !name) {
+    throw new EffectorError(COMPILE_TARGET_UNKNOWN, { target: name }, 'Target name must be a non-empty string.');
+  }
+  if (typeof compileFn !== 'function') {
+    throw new TypeError('compileFn must be a function');
+  }
+  _customTargets.set(name, {
+    fn: compileFn,
+    description: options.description || `Custom target: ${name}`,
+    format: options.format || 'text',
+  });
+}
+
+/**
+ * Unregister a custom compile target.
+ * @param {string} name
+ * @returns {boolean} true if the target was registered and removed
+ */
+export function unregisterTarget(name) {
+  return _customTargets.delete(name);
+}
 
 /**
  * Compile an effector definition to a specific runtime target.
@@ -20,6 +57,11 @@
  * @returns {string} Compiled output as string
  */
 export function compile(effectorDef, target = 'json') {
+  // Check custom targets first
+  if (_customTargets.has(target)) {
+    return _customTargets.get(target).fn(effectorDef);
+  }
+
   switch (target) {
     case 'mcp':
       return compileMCP(effectorDef);
@@ -30,7 +72,10 @@ export function compile(effectorDef, target = 'json') {
     case 'json':
       return JSON.stringify(effectorDef, null, 2);
     default:
-      throw new Error(`Unknown compile target: "${target}". Supported: mcp, openai-agents, langchain, json`);
+      throw new EffectorError(
+        COMPILE_TARGET_UNKNOWN,
+        { target, available: listTargets().map(t => t.name) },
+      );
   }
 }
 
@@ -38,12 +83,18 @@ export function compile(effectorDef, target = 'json') {
  * List available compile targets.
  */
 export function listTargets() {
-  return [
+  const builtIn = [
     { name: 'mcp', description: 'MCP tool schema (JSON-RPC 2.0)', format: 'json' },
     { name: 'openai-agents', description: 'OpenAI Agents FunctionTool definition', format: 'json' },
     { name: 'langchain', description: 'LangChain StructuredTool Python class', format: 'python' },
     { name: 'json', description: 'Raw effector IR (passthrough)', format: 'json' },
   ];
+
+  for (const [name, entry] of _customTargets) {
+    builtIn.push({ name, description: entry.description, format: entry.format });
+  }
+
+  return builtIn;
 }
 
 // ── MCP Target ────────────────────────────────────────────

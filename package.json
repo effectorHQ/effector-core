@@ -1,29 +1,62 @@
 {
   "name": "@effectorhq/core",
-  "version": "0.1.0",
-  "description": "Shared kernel for the effector ecosystem — TOML parser, SKILL.md parser, type checker, schema validator",
+  "version": "1.0.0",
+  "description": "The standard toolkit for typed AI agent tool interoperability — parse, validate, type-check, and compile agent tool definitions",
   "type": "module",
   "main": "src/index.js",
+  "types": "src/index.d.ts",
   "exports": {
-    ".": "./src/index.js",
-    "./toml": "./src/toml-parser.js",
-    "./skill": "./src/skill-parser.js",
-    "./types": "./src/type-checker.js",
-    "./schema": "./src/schema-validator.js",
-    "./compile": "./src/compiler-targets.js"
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./toml": {
+      "types": "./src/toml-parser.d.ts",
+      "default": "./src/toml-parser.js"
+    },
+    "./skill": {
+      "types": "./src/skill-parser.d.ts",
+      "default": "./src/skill-parser.js"
+    },
+    "./types": {
+      "types": "./src/type-checker.d.ts",
+      "default": "./src/type-checker.js"
+    },
+    "./schema": {
+      "types": "./src/schema-validator.d.ts",
+      "default": "./src/schema-validator.js"
+    },
+    "./compile": {
+      "types": "./src/compiler-targets.d.ts",
+      "default": "./src/compiler-targets.js"
+    },
+    "./errors": {
+      "types": "./src/errors.d.ts",
+      "default": "./src/errors.js"
+    }
+  },
+  "bin": {
+    "effector-core": "./src/cli.js"
   },
   "scripts": {
     "test": "node --test tests/*.test.js",
     "lint": "node --check src/*.js",
+    "sync-types": "node scripts/sync-types.js",
     "prepublishOnly": "npm test && npm run lint"
   },
   "keywords": [
-    "effector",
     "ai-agent",
-    "capability-ir",
+    "tool-interoperability",
+    "mcp",
+    "openai",
+    "langchain",
     "type-system",
     "toml-parser",
-    "shared-kernel"
+    "zero-dependency",
+    "compiler",
+    "effector",
+    "agent-tools",
+    "capability"
   ],
   "author": "effectorHQ Contributors",
   "license": "MIT",
@@ -34,6 +67,10 @@
   "homepage": "https://github.com/effectorHQ/effector-core",
   "bugs": {
     "url": "https://github.com/effectorHQ/effector-core/issues"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/effectorHQ"
   },
   "engines": {
     "node": ">=18"

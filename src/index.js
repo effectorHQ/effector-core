@@ -46,4 +46,21 @@ export {
 export {
   compile,
   listTargets,
+  registerTarget,
+  unregisterTarget,
 } from './compiler-targets.js';
+
+// Fluent API
+export { Effector } from './effector.js';
+
+// Errors
+export {
+  EffectorError,
+  TOML_PARSE_ERROR,
+  SKILL_PARSE_ERROR,
+  TYPE_UNKNOWN,
+  TYPE_INCOMPATIBLE,
+  VALIDATION_ERROR,
+  COMPILE_TARGET_UNKNOWN,
+  FILE_NOT_FOUND,
+} from './errors.js';

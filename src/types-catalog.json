@@ -1,0 +1,283 @@
+{
+  "version": "0.2.0",
+  "generated": "2026-03-14",
+  "description": "Machine-readable catalog of all standard Effector types. Consumed by skill-lint, skill-eval, effector-compose, effector-graph, and any tool that needs to validate or check compatibility of type names declared in effector.toml manifests.",
+
+  "types": {
+    "input": {
+      "String": {
+        "category": "primitive",
+        "fields": { "required": ["text"], "optional": ["encoding"] },
+        "aliases": ["PlainText", "TextString"],
+        "frequency": 0.62,
+        "description": "Plain text input — the most common input type"
+      },
+      "FilePath": {
+        "category": "primitive",
+        "fields": { "required": ["path"], "optional": ["exists", "type", "mimeType"] },
+        "frequency": 0.18,
+        "description": "A filesystem path (absolute or relative)"
+      },
+      "URL": {
+        "category": "primitive",
+        "fields": { "required": ["href"], "optional": ["protocol"] },
+        "frequency": 0.12,
+        "description": "A URL string"
+      },
+      "JSON": {
+        "category": "primitive",
+        "fields": { "required": ["data"], "optional": ["schema"] },
+        "frequency": 0.05,
+        "description": "JSON data with optional schema"
+      },
+      "RepositoryRef": {
+        "category": "reference",
+        "fields": { "required": ["owner", "repo"], "optional": ["provider", "ref", "url"] },
+        "frequency": 0.04,
+        "description": "A reference to a version-controlled repository"
+      },
+      "CodeDiff": {
+        "category": "code",
+        "fields": { "required": ["files"], "optional": ["baseBranch", "headBranch", "repository"] },
+        "frequency": 0.03,
+        "description": "A code diff between two states"
+      },
+      "CodeSnippet": {
+        "category": "code",
+        "fields": { "required": ["code", "language"], "optional": ["path", "startLine", "endLine"] },
+        "description": "A snippet of source code with language"
+      },
+      "IssueRef": {
+        "category": "reference",
+        "fields": { "required": ["id"], "optional": ["repo", "provider", "url"] },
+        "description": "A reference to an issue or ticket"
+      },
+      "PullRequestRef": {
+        "category": "reference",
+        "fields": { "required": ["number"], "optional": ["repo", "provider", "title", "headBranch", "baseBranch", "url"] },
+        "description": "A reference to a pull request"
+      },
+      "CommitRef": {
+        "category": "reference",
+        "fields": { "required": ["sha"], "optional": ["repo", "message", "author", "timestamp"] },
+        "description": "A reference to a specific commit"
+      },
+      "TextDocument": {
+        "category": "document",
+        "fields": { "required": ["content", "format"], "optional": ["title", "metadata"] },
+        "description": "A text document in any format"
+      },
+      "DataTable": {
+        "category": "data",
+        "fields": { "required": ["headers", "rows"], "optional": ["types"] },
+        "description": "Tabular data — rows and columns"
+      },
+      "ImageRef": {
+        "category": "media",
+        "fields": { "required": ["mimeType"], "optional": ["url", "path", "base64", "width", "height"] },
+        "description": "An image with metadata"
+      },
+      "PatchSet": {
+        "category": "code",
+        "fields": { "required": ["patches", "description"] },
+        "description": "A set of patches to apply to a codebase"
+      },
+      "StructuredData": {
+        "category": "data",
+        "fields": { "required": ["data"], "optional": ["schema"] },
+        "description": "Structured data with optional JSON Schema"
+      }
+    },
+
+    "output": {
+      "Markdown": {
+        "category": "primitive",
+        "fields": { "required": ["content"], "optional": ["title"] },
+        "aliases": ["MarkdownReport", "MarkdownContent"],
+        "frequency": 0.45,
+        "description": "Markdown-formatted text — the most common output type"
+      },
+      "JSON": {
+        "category": "primitive",
+        "fields": { "required": ["data"], "optional": ["schema"] },
+        "aliases": ["JSONResult", "JSONPayload"],
+        "frequency": 0.28,
+        "description": "JSON data output"
+      },
+      "String": {
+        "category": "primitive",
+        "fields": { "required": ["text"], "optional": ["encoding"] },
+        "aliases": ["PlainText"],
+        "frequency": 0.15,
+        "description": "Plain text output"
+      },
+      "ReviewReport": {
+        "category": "analysis",
+        "fields": { "required": ["findings", "severity", "summary"], "optional": ["score"] },
+        "description": "A code review report with findings"
+      },
+      "SecurityReport": {
+        "category": "analysis",
+        "fields": { "required": ["vulnerabilities", "riskLevel", "summary", "findings", "severity"] },
+        "subtypeOf": ["ReviewReport"],
+        "description": "A security scan report — structural subtype of ReviewReport"
+      },
+      "Notification": {
+        "category": "communication",
+        "fields": { "required": ["message"], "optional": ["channel", "level", "attachments"] },
+        "frequency": 0.03,
+        "description": "A notification to a communication platform"
+      },
+      "SlackMessage": {
+        "category": "communication",
+        "fields": { "required": ["channel", "text"], "optional": ["blocks", "thread_ts"] },
+        "subtypeOf": ["Notification"],
+        "description": "Slack-specific message — structural subtype of Notification"
+      },
+      "DiscordMessage": {
+        "category": "communication",
+        "fields": { "required": ["channelId", "content"], "optional": ["embeds"] },
+        "subtypeOf": ["Notification"],
+        "description": "Discord message"
+      },
+      "OperationStatus": {
+        "category": "status",
+        "fields": { "required": ["success"], "optional": ["exitCode", "stdout", "stderr", "duration", "message"] },
+        "description": "Generic operation execution result"
+      },
+      "TestResult": {
+        "category": "status",
+        "fields": { "required": ["passed", "failed", "skipped", "total", "duration"], "optional": ["failures", "coverage"] },
+        "description": "Test run result"
+      },
+      "DeploymentStatus": {
+        "category": "status",
+        "fields": { "required": ["status"], "optional": ["environment", "version", "url", "timestamp", "logs"] },
+        "description": "Deployment status"
+      },
+      "LintReport": {
+        "category": "analysis",
+        "fields": { "required": ["issues", "total", "errorCount", "warningCount", "passedChecks"] },
+        "description": "Static analysis / linting report"
+      },
+      "Summary": {
+        "category": "analysis",
+        "fields": { "required": ["text", "keyPoints", "confidence", "wordCount"] },
+        "description": "A summary of content"
+      },
+      "TranslatedText": {
+        "category": "analysis",
+        "fields": { "required": ["text", "sourceLanguage", "targetLanguage", "confidence"] },
+        "description": "Translated text output"
+      }
+    },
+
+    "context": {
+      "GitHubCredentials": {
+        "category": "credentials",
+        "fields": { "required": ["tokenEnvVar"], "optional": ["scopes"] },
+        "frequency": 0.38,
+        "description": "GitHub credentials — most common context type"
+      },
+      "GenericAPIKey": {
+        "category": "credentials",
+        "fields": { "required": ["service", "envVar"] },
+        "frequency": 0.20,
+        "description": "Generic API key credential"
+      },
+      "Docker": {
+        "category": "tools",
+        "fields": { "required": [], "optional": ["registryUrl", "platform"] },
+        "frequency": 0.22,
+        "description": "Docker tool context"
+      },
+      "Kubernetes": {
+        "category": "tools",
+        "fields": { "required": [], "optional": ["namespace", "contextName", "kubeconfigEnvVar"] },
+        "frequency": 0.15,
+        "description": "Kubernetes cluster context"
+      },
+      "AWSCredentials": {
+        "category": "credentials",
+        "fields": { "required": [], "optional": ["region", "profileEnvVar"] },
+        "frequency": 0.14,
+        "description": "AWS credentials context"
+      },
+      "SlackCredentials": {
+        "category": "credentials",
+        "fields": { "required": ["tokenEnvVar"] },
+        "frequency": 0.12,
+        "description": "Slack workspace credentials"
+      },
+      "Repository": {
+        "category": "config",
+        "fields": { "required": ["url"], "optional": ["branch", "provider", "defaultBranch"] },
+        "description": "Source code repository context"
+      },
+      "CodingStandards": {
+        "category": "config",
+        "fields": { "required": [], "optional": ["rules", "linter", "style", "language"] },
+        "description": "Coding standards / style guide"
+      },
+      "ShellEnvironment": {
+        "category": "tools",
+        "fields": { "required": [], "optional": ["workingDirectory", "env", "timeout"] },
+        "description": "Shell / process execution environment"
+      },
+      "UserPreferences": {
+        "category": "config",
+        "fields": { "required": [], "optional": ["language", "timezone", "verbosity"] },
+        "description": "User preferences for capability execution"
+      },
+      "ConversationHistory": {
+        "category": "agent",
+        "fields": { "required": ["messages", "tokenCount"] },
+        "description": "Conversation history context"
+      },
+      "PromptContext": {
+        "category": "agent",
+        "fields": { "required": ["variables"] },
+        "description": "Template variable bindings for prompt Effectors"
+      },
+      "APICredentials": {
+        "category": "credentials",
+        "fields": { "required": ["service", "authMethod"] },
+        "description": "Opaque API credentials"
+      }
+    }
+  },
+
+  "subtypeRelations": [
+    {
+      "subtype": "SecurityReport",
+      "supertype": "ReviewReport",
+      "reason": "SecurityReport has all ReviewReport fields (findings, severity, summary) plus vulnerabilities and riskLevel"
+    },
+    {
+      "subtype": "SlackMessage",
+      "supertype": "Notification",
+      "reason": "SlackMessage has required message-like fields that satisfy Notification's interface"
+    },
+    {
+      "subtype": "DiscordMessage",
+      "supertype": "Notification",
+      "reason": "DiscordMessage has required message-like fields that satisfy Notification's interface"
+    }
+  ],
+
+  "categories": {
+    "primitive": "Basic data types (strings, numbers, URLs, file paths)",
+    "code": "Source code, diffs, patches",
+    "reference": "References to external resources (repos, issues, PRs, commits)",
+    "document": "Formatted documents",
+    "data": "Structured and tabular data",
+    "media": "Images, audio, video",
+    "analysis": "Reports, summaries, assessments",
+    "communication": "Messages and notifications",
+    "status": "Operation and deployment results",
+    "credentials": "Authentication tokens and API keys",
+    "tools": "Tool and runtime contexts",
+    "config": "Configuration and preferences",
+    "agent": "Agent-specific contexts"
+  }
+}

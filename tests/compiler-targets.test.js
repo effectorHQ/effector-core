@@ -114,10 +114,10 @@ test('compile: JSON target returns raw IR', () => {
 
 // ── Error handling ───────────────────────────────────────
 
-test('compile: unknown target throws', () => {
+test('compile: unknown target throws EffectorError', () => {
   assert.throws(
     () => compile(SAMPLE_DEF, 'kubernetes'),
-    (err) => err.message.includes('Unknown compile target')
+    (err) => err.name === 'EffectorError' && err.code === 'EFFECTOR_COMPILE_TARGET_UNKNOWN'
   );
 });
 

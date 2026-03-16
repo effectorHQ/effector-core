@@ -1,7 +1,7 @@
 /**
  * @module @effectorhq/core/types
  *
- * Canonical type checker backed by effector-types/types.json.
+ * Canonical type checker with bundled types catalog (36 standard types).
  * Replaces duplicated checkers in effector-compose and effector-graph.
  *
  * Returns a unified TypeCheckResult with both boolean compatibility
@@ -18,11 +18,7 @@
  * Zero dependencies. Falls back to naive comparison if types.json is unavailable.
  */
 
-import { readFileSync, existsSync } from 'node:fs';
-import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+import { readFileSync } from 'node:fs';
 
 // ─── Catalog Loading ─────────────────────────────────────────
 
@@ -30,31 +26,22 @@ let _catalog = null;
 let _catalogSearched = false;
 
 /**
- * Load the types catalog. Searches sibling directories and node_modules.
- * Caches the result (including null if not found).
+ * Load the bundled types catalog (36 standard types across input/output/context).
+ * The catalog is shipped with the package — no filesystem search needed.
+ * Caches the result. Use setCatalog() to override.
  *
- * @returns {Object|null} The parsed types.json catalog, or null
+ * @returns {Object|null} The parsed types catalog, or null
  */
 function loadCatalog() {
   if (_catalogSearched) return _catalog;
   _catalogSearched = true;
 
-  const candidates = [
-    join(__dirname, '..', '..', 'effector-types', 'types.json'),
-    join(__dirname, '..', 'node_modules', 'effector-types', 'types.json'),
-    join(__dirname, '..', '..', 'node_modules', 'effector-types', 'types.json'),
-  ];
+  try {
+    const catalogPath = new URL('./types-catalog.json', import.meta.url);
+    _catalog = JSON.parse(readFileSync(catalogPath, 'utf-8'));
+  } catch { /* falls back to naive comparison */ }
 
-  for (const path of candidates) {
-    if (existsSync(path)) {
-      try {
-        _catalog = JSON.parse(readFileSync(path, 'utf-8'));
-        return _catalog;
-      } catch { /* ignore */ }
-    }
-  }
-
-  return null;
+  return _catalog;
 }
 
 /**
