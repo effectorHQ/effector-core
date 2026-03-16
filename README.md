@@ -82,11 +82,11 @@ import { compile, registerTarget } from '@effectorhq/core/compile';
 **Effector** adds a typed interface layer to AI agent tools. It's a sidecar manifest — your tool keeps running exactly as before.
 
 ```
-┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+┌───────────────┐     ┌──────────────┐     ┌──────────────┐
 │ effector.toml │────▶│   validate   │────▶│   compile    │
-│   SKILL.md   │     │  type-check  │     │  mcp/openai/ │
-└──────────────┘     └──────────────┘     │  langchain   │
-                                          └──────────────┘
+│   SKILL.md    │     │  type-check  │     │  mcp/openai/ │
+└───────────────┘     └──────────────┘     │  langchain   │
+                                           └──────────────┘
 ```
 
 ### The Problem
