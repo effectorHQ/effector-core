@@ -18,6 +18,15 @@ Parse, validate, type-check, and compile AI agent tool definitions — zero depe
 npm install @effectorhq/core
 ```
 
+You can also use the CLI directly without installing globally:
+
+```bash
+npx @effectorhq/core types
+npx @effectorhq/core init
+```
+
+See the published package on npm: https://www.npmjs.com/package/@effectorhq/core
+
 ## Quick Start
 
 ### Fluent API
