@@ -5,6 +5,7 @@
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org)
 [![Zero Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](#zero-dependencies)
 [![Tests](https://img.shields.io/badge/tests-102%20passing-brightgreen.svg)](#)
+<a href="https://awesome.re"><img src="https://awesome.re/badge.svg" alt="Awesome"></a>
 
 **The standard toolkit for typed AI agent tool interoperability.**
 
