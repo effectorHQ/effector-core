@@ -291,4 +291,4 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ## License
 
-[MIT](./LICENSE) — effectorHQ Contributors
+[MIT](./LICENSE)
