@@ -1,0 +1,16 @@
+[effector]
+name = "code-review"
+version = "0.1.0"
+type = "skill"
+description = "Performs automated code review on pull request diffs"
+
+[effector.interface]
+input = "CodeDiff"
+output = "ReviewReport"
+context = ["Repository", "GitHubCredentials"]
+
+[effector.permissions]
+network = true
+subprocess = false
+env-read = ["GITHUB_TOKEN"]
+
