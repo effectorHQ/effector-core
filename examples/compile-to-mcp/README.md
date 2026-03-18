@@ -4,6 +4,8 @@ This example compiles the `SKILL.md` + `effector.toml` in this folder into an MC
 
 ## Run
 
+If you run this example outside the `effector-core` repo, run `npm install @effectorhq/core` first.
+
 ```bash
 node compile.js
 ```

@@ -1,6 +1,6 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { Effector } from '../../src/effector.js';
+import { Effector } from '@effectorhq/core';
 
 mkdirSync('output', { recursive: true });
 

@@ -1,1 +1,24 @@
-"{\n  \"name\": \"code_review\",\n  \"description\": \"Performs automated code review on pull request diffs\",\n  \"inputSchema\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"GITHUB_TOKEN\": {\n        \"type\": \"string\",\n        \"description\": \"Environment variable: GITHUB_TOKEN\"\n      }\n    },\n    \"required\": [\n      \"GITHUB_TOKEN\"\n    ]\n  },\n  \"_interface\": {\n    \"input\": \"CodeDiff\",\n    \"output\": \"ReviewReport\",\n    \"context\": [\n      \"Repository\",\n      \"GitHubCredentials\"\n    ]\n  }\n}"
+{
+  "name": "code_review",
+  "description": "Performs automated code review on pull request diffs",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "GITHUB_TOKEN": {
+        "type": "string",
+        "description": "Environment variable: GITHUB_TOKEN"
+      }
+    },
+    "required": [
+      "GITHUB_TOKEN"
+    ]
+  },
+  "_interface": {
+    "input": "CodeDiff",
+    "output": "ReviewReport",
+    "context": [
+      "Repository",
+      "GitHubCredentials"
+    ]
+  }
+}
