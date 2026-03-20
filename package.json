@@ -33,6 +33,10 @@
     "./errors": {
       "types": "./src/errors.d.ts",
       "default": "./src/errors.js"
+    },
+    "./guard": {
+      "types": "./src/guard.d.ts",
+      "default": "./src/guard.js"
     }
   },
   "bin": {

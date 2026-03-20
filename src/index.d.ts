@@ -67,3 +67,33 @@ export {
   registerTarget,
   unregisterTarget,
 } from './compiler-targets.js';
+
+// Fluent API
+export { Effector } from './effector.js';
+
+// Runtime type guards
+export type {
+  ValidationResult as GuardValidationResult,
+  GuardOptions,
+  EffectorInterface as GuardInterface,
+  Guard,
+} from './guard.js';
+
+export {
+  validateAgainstType,
+  createGuard,
+  guardCall,
+  guardMCP,
+} from './guard.js';
+
+// Errors
+export {
+  EffectorError,
+  TOML_PARSE_ERROR,
+  SKILL_PARSE_ERROR,
+  TYPE_UNKNOWN,
+  TYPE_INCOMPATIBLE,
+  VALIDATION_ERROR,
+  COMPILE_TARGET_UNKNOWN,
+  FILE_NOT_FOUND,
+} from './errors.js';

@@ -47,6 +47,38 @@ describe('Bundled types catalog', () => {
     assert.equal(result.precision, 0.9);
   });
 
+  it('subtypes satisfy parent required fields (Liskov Substitution)', async () => {
+    // SlackMessage and DiscordMessage are subtypes of Notification.
+    // Notification requires ["message"]. Subtypes MUST also have "message".
+    // This test prevents the LSP violation regression.
+    const catalog = JSON.parse(
+      (await import('node:fs')).readFileSync(
+        new URL('../src/types-catalog.json', import.meta.url), 'utf-8'
+      )
+    );
+    const types = catalog.types;
+    for (const [role, roleTypes] of Object.entries(types)) {
+      for (const [name, def] of Object.entries(roleTypes)) {
+        if (!def.subtypeOf) continue;
+        for (const parent of def.subtypeOf) {
+          // Find parent in any role
+          let parentDef = null;
+          for (const r of Object.values(types)) {
+            if (r[parent]) { parentDef = r[parent]; break; }
+          }
+          if (!parentDef?.fields?.required) continue;
+          const childRequired = def.fields?.required || [];
+          for (const field of parentDef.fields.required) {
+            assert.ok(
+              childRequired.includes(field),
+              `LSP violation: ${name} (subtype of ${parent}) is missing required field "${field}"`
+            );
+          }
+        }
+      }
+    }
+  });
+
   it('setCatalog() overrides the bundled catalog', () => {
     const custom = {
       types: { input: { Foo: { aliases: [] } }, output: {}, context: {} },

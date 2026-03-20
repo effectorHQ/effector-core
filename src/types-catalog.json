@@ -130,15 +130,15 @@
       },
       "SlackMessage": {
         "category": "communication",
-        "fields": { "required": ["channel", "text"], "optional": ["blocks", "thread_ts"] },
+        "fields": { "required": ["message", "channel", "text"], "optional": ["blocks", "thread_ts"] },
         "subtypeOf": ["Notification"],
-        "description": "Slack-specific message — structural subtype of Notification"
+        "description": "Slack-specific notification — satisfies Notification.message and adds channel/text"
       },
       "DiscordMessage": {
         "category": "communication",
-        "fields": { "required": ["channelId", "content"], "optional": ["embeds"] },
+        "fields": { "required": ["message", "channelId", "content"], "optional": ["embeds"] },
         "subtypeOf": ["Notification"],
-        "description": "Discord message"
+        "description": "Discord notification — satisfies Notification.message and adds channelId/content"
       },
       "OperationStatus": {
         "category": "status",

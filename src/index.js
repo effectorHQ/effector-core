@@ -53,6 +53,14 @@ export {
 // Fluent API
 export { Effector } from './effector.js';
 
+// Runtime type guards
+export {
+  validateAgainstType,
+  createGuard,
+  guardCall,
+  guardMCP,
+} from './guard.js';
+
 // Errors
 export {
   EffectorError,

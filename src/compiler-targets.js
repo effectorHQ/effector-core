@@ -211,7 +211,7 @@ ${argsSchema}
     def _run(self, **kwargs) -> str:
         \"\"\"Execute the skill. Override this method with actual implementation.\"\"\"
         # Instruction passthrough: return SKILL.md content for the LLM
-        return """${(def.skillContent || '').replace(/"""/g, '\\"\\"\\"').slice(0, 2000)}"""
+        return """${(def.skillContent || '').slice(0, 2000).replace(/"""/g, '\\"\\"\\"')}"""
 
     async def _arun(self, **kwargs) -> str:
         return self._run(**kwargs)

@@ -102,6 +102,26 @@ test('compile: LangChain target with no env vars omits input class', () => {
   assert.ok(!output.includes('class SimpleToolInput'));
 });
 
+test('compile: LangChain target truncates before escaping (no mid-escape truncation)', () => {
+  // Regression test: skillContent with triple-quotes at the boundary
+  // Previously: escape THEN truncate could cut mid-escape-sequence → invalid Python
+  // With the fix (slice first, then escape), truncation can never land mid-escape.
+  const longContent = 'A'.repeat(1995) + '"""' + 'B'.repeat(100);
+  const def = { ...SAMPLE_DEF, skillContent: longContent };
+  const output = compile(def, 'langchain');
+
+  // The content gets truncated to 2000 chars BEFORE escaping,
+  // so the triple-quotes at position 1995 are partially included (5 chars left of 2000)
+  // then the escape happens on the truncated string — always safe.
+  assert.ok(output.includes('class LinearTool(BaseTool)'));
+  // The output should not end with a single backslash (broken escape)
+  const docstringMatch = output.match(/return """(.+?)"""/s);
+  if (docstringMatch) {
+    const content = docstringMatch[1];
+    assert.ok(!content.endsWith('\\'), 'Docstring should not end with dangling backslash');
+  }
+});
+
 // ── JSON target ──────────────────────────────────────────
 
 test('compile: JSON target returns raw IR', () => {
