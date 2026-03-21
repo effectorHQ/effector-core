@@ -13,7 +13,7 @@
 
 Parse, validate, type-check, and compile AI agent tool definitions.
 
-Zero dependencies, 36 built-in types, 4+ compile targets.
+Zero dependencies, 40 built-in types, 4+ compile targets.
 
 ---
 
@@ -60,7 +60,7 @@ npx @effectorhq/core validate .
 # Compile to MCP
 npx @effectorhq/core compile . -t mcp
 
-# List all 36 standard types
+# List all 40 standard types
 npx @effectorhq/core types
 ```
 
@@ -115,7 +115,7 @@ subprocess = false
 ```
 
 Now your tool has:
-- **Type-safe interfaces** — input/output/context from 36 standard types
+- **Type-safe interfaces** — input/output/context from 40 standard types
 - **Static composition checking** — verify tool chains before execution
 - **Cross-runtime portability** — compile to MCP, OpenAI, LangChain, or JSON
 - **Security auditing** — declared permissions vs actual behavior
@@ -154,7 +154,7 @@ Now your tool has:
 
 ## Type System
 
-36 standard types across three roles, grounded in real-world usage from 13,000+ analyzed tools:
+40 standard types across three roles, grounded in real-world usage from 13,000+ analyzed tools:
 
 | Role | Types | Examples |
 |------|-------|----------|
@@ -213,7 +213,7 @@ USAGE
 COMMANDS
   validate [dir]           Parse and validate effector.toml + SKILL.md
   compile  [dir] -t <tgt>  Compile to a runtime target
-  check-types [dir]        Validate types against the 36-type catalog
+  check-types [dir]        Validate types against the 40-type catalog
   types                    List all standard types
   init                     Scaffold effector.toml + SKILL.md
 
@@ -279,7 +279,7 @@ See the [`examples/`](./examples) directory:
    └────────┘  └────────┘  └───┬────┘  └────────┘  └────────┘
                                │
                     ┌──────────▼──────────┐
-                    │  types-catalog.json  │  ← 36 bundled types
+                    │  types-catalog.json  │  ← 40 bundled types
                     └─────────────────────┘
 ```
 
