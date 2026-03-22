@@ -268,18 +268,18 @@ See the [`examples/`](./examples) directory:
 
 ```
                      ┌─────────────────────┐
-                     │     Effector API     │  ← Fluent builder
+                     │     Effector API    │  ← Fluent builder
                      └──────────┬──────────┘
                                 │
         ┌───────────┬───────────┼───────────┬────────────┐
         │           │           │           │            │
    ┌────▼───┐  ┌────▼───┐  ┌───▼────┐  ┌───▼────┐  ┌───▼────┐
    │  TOML  │  │ SKILL  │  │ Types  │  │ Schema │  │Compile │
-   │ Parser │  │ Parser │  │Checker │  │ Valid  │  │Targets │
+   │ Parser │  │ Parser │  │ Checker│  │ Valid  │  │Targets │
    └────────┘  └────────┘  └───┬────┘  └────────┘  └────────┘
                                │
                     ┌──────────▼──────────┐
-                    │  types-catalog.json  │  ← 40 bundled types
+                    │  types-catalog.json │  ← 40 bundled types
                     └─────────────────────┘
 ```
 
