@@ -25,7 +25,7 @@
  *   const handler = guardMCP(originalHandler, effectorDef);
  *   // Validates every tools/call request and response
  *
- * Zero dependencies. Uses the bundled 36-type catalog.
+ * Zero dependencies. Uses the bundled 40-type catalog.
  */
 
 import { readFileSync } from 'node:fs';

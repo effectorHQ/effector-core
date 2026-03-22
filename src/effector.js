@@ -112,7 +112,7 @@ export class Effector {
 
   /**
    * Validate type names against the types catalog.
-   * Uses the bundled 36-type catalog by default.
+   * Uses the bundled 40-type catalog by default.
    * @param {Object} [catalog] - Optional custom catalog
    * @returns {this} for chaining
    */

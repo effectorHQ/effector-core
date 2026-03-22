@@ -31,7 +31,7 @@ src/
   effector.js           Fluent builder API
   errors.js             Structured error types
   cli.js                CLI binary
-  types-catalog.json    Bundled 36-type catalog
+  types-catalog.json    Bundled 40-type catalog
   *.d.ts                TypeScript declarations
 ```
 

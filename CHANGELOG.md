@@ -12,7 +12,7 @@ First public npm release. `@effectorhq/core` is now a fully self-contained, zero
 ### Added
 
 **Bundled type catalog**
-- `src/types-catalog.json` — 36 standard types (15 input, 14 output, 11 context) bundled into the package
+- `src/types-catalog.json` — 40 standard types bundled into the package
 - Type checker loads the catalog via `import.meta.url` — fixes npm install breakage caused by sibling directory search
 
 **TypeScript declarations**
@@ -60,7 +60,7 @@ First public npm release. `@effectorhq/core` is now a fully self-contained, zero
 - `"bin": { "effector-core": "./src/cli.js" }`
 
 **Tests** — 102 total (up from 69)
-- `tests/bundled-catalog.test.js` (7) — catalog loads, 36 types present, alias resolution, subtype relations, `setCatalog()` override
+- `tests/bundled-catalog.test.js` (7) — catalog loads, 40 types present, alias resolution, subtype relations, `setCatalog()` override
 - `tests/cli.test.js` (7) — `--version`, `--help`, `types`, `validate`, exit codes
 - `tests/custom-targets.test.js` (6) — register, compile, unregister, precedence, unknown-target error
 - `tests/effector.test.js` (12) — `fromToml`, `fromSkill`, `validate`, `checkTypes`, `compile`, chain

@@ -17,7 +17,7 @@ export const FILE_NOT_FOUND = 'EFFECTOR_FILE_NOT_FOUND';
 const SUGGESTIONS = {
   [TOML_PARSE_ERROR]: 'Check your effector.toml syntax. See https://github.com/effectorHQ/effector-core#effectortoml',
   [SKILL_PARSE_ERROR]: 'Ensure SKILL.md starts and ends with --- delimiters around YAML frontmatter.',
-  [TYPE_UNKNOWN]: 'Run `effector-core types` to see all 36 standard types.',
+  [TYPE_UNKNOWN]: 'Run `effector-core types` to see all 40 standard types.',
   [TYPE_INCOMPATIBLE]: 'Check that the output type of the upstream tool matches the input type of the downstream tool.',
   [VALIDATION_ERROR]: 'Run `effector-core validate .` to see all validation errors.',
   [COMPILE_TARGET_UNKNOWN]: 'Use listTargets() or `effector-core compile --help` to see available targets.',

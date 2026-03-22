@@ -57,9 +57,11 @@ ${c.bold('USAGE')}
 ${c.bold('COMMANDS')}
   ${c.cyan('validate')} [dir]           Parse and validate effector.toml + SKILL.md
   ${c.cyan('compile')}  [dir] -t <tgt>  Compile to a runtime target
-  ${c.cyan('check-types')} [dir]        Validate types against the 36-type catalog
+  ${c.cyan('check-types')} [dir]        Validate types against the 40-type catalog
   ${c.cyan('types')}                    List all standard types
   ${c.cyan('init')}                     Scaffold effector.toml + SKILL.md
+  ${c.cyan('init')} --from-mcp [dir]    Generate effector.toml from an existing MCP server
+  ${c.cyan('badge')} [dir]              Print a shields.io badge URL for your effector
 
 ${c.bold('OPTIONS')}
   -t, --target <target>    Compile target: mcp, openai-agents, langchain, json
@@ -188,7 +190,7 @@ function cmdCheckTypes(dir) {
     ...(iface.context || []).map(t => ['context', t]),
   ];
 
-  console.log(c.bold('Type checking against 36-type catalog'));
+  console.log(c.bold('Type checking against 40-type catalog'));
   for (const [role, typeName] of types) {
     if (!typeName) continue;
     if (isKnownType(typeName)) {
@@ -289,6 +291,7 @@ try {
     allowPositionals: true,
     options: {
       target: { type: 'string', short: 't' },
+      'from-mcp': { type: 'boolean' },
       help: { type: 'boolean', short: 'h' },
       version: { type: 'boolean', short: 'v' },
     },
@@ -321,8 +324,60 @@ try {
       cmdTypes();
       break;
     case 'init':
-      cmdInit();
+      if (values['from-mcp']) {
+        const { reverseMCP } = await import('./reverse-compiler.js');
+        const targetDir = resolve(dir || '.');
+        console.log(`${c.bold('Scanning MCP server:')} ${targetDir}\n`);
+        const result = reverseMCP(targetDir);
+        for (const w of result.warnings) {
+          console.log(`${c.yellow('!')} ${w}`);
+        }
+        if (result.tools.length > 0) {
+          console.log(`${c.green('✓')} Found ${result.tools.length} tool(s): ${result.tools.map(t => c.cyan(t.name)).join(', ')}`);
+        }
+        if (result.toml) {
+          const outPath = join(targetDir, 'effector.toml');
+          if (existsSync(outPath)) {
+            console.log(`\n${c.yellow('!')} effector.toml already exists. Printing to stdout instead:\n`);
+            console.log(result.toml);
+          } else {
+            writeFileSync(outPath, result.toml);
+            console.log(`\n${c.green('✓')} Created ${c.cyan('effector.toml')}`);
+            console.log(`\n${c.bold('Next steps:')}`);
+            console.log(`  1. Review the ${c.cyan('# TODO')} comments in effector.toml`);
+            console.log(`  2. Run ${c.cyan('effector-core validate .')} to check`);
+            console.log(`  3. Run ${c.cyan('effector-core check-types .')} to verify types`);
+          }
+        } else {
+          console.log(`\n${c.red('Could not generate effector.toml.')}`);
+          process.exit(1);
+        }
+      } else {
+        cmdInit();
+      }
       break;
+    case 'badge': {
+      const badgeDir = resolve(dir || '.');
+      const badgeToml = join(badgeDir, 'effector.toml');
+      if (!existsSync(badgeToml)) {
+        console.error(`${c.red('Error:')} No effector.toml found in ${badgeDir}`);
+        process.exit(1);
+      }
+      const def = parseEffectorToml(readFileSync(badgeToml, 'utf-8'));
+      const iface = def.interface;
+      let label = 'effector';
+      let msg = 'typed';
+      if (iface && iface.input && iface.output) {
+        msg = `${iface.input} → ${iface.output}`;
+      }
+      const encoded = encodeURIComponent(`${label}-${msg}-E03E3E`).replace(/-/g, '--');
+      const url = `https://img.shields.io/badge/${encoded}`;
+      console.log(c.bold('Shields.io badge URL:'));
+      console.log(`  ${url}`);
+      console.log(`\n${c.bold('Markdown:')}`);
+      console.log(`  [![effector](${url})](https://github.com/effectorHQ)`);
+      break;
+    }
     default:
       console.error(`${c.red('Unknown command:')} ${command}`);
       showHelp();

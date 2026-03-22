@@ -1,7 +1,7 @@
 /**
  * @module @effectorhq/core/types
  *
- * Canonical type checker with bundled types catalog (36 standard types).
+ * Canonical type checker with bundled types catalog (40 standard types).
  * Replaces duplicated checkers in effector-compose and effector-graph.
  *
  * Returns a unified TypeCheckResult with both boolean compatibility
@@ -26,7 +26,7 @@ let _catalog = null;
 let _catalogSearched = false;
 
 /**
- * Load the bundled types catalog (36 standard types across input/output/context).
+ * Load the bundled types catalog (40 standard types across input/output/context).
  * The catalog is shipped with the package — no filesystem search needed.
  * Caches the result. Use setCatalog() to override.
  *
