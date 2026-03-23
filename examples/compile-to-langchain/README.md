@@ -15,3 +15,6 @@ node compile.js
 - `output/langchain-structured-tool.py` (preferred)
 - or `output/langchain-structured-tool.json` (fallback if output format changes)
 
+## License
+
+This project is currently licensed under the Apache 2.0 License 。

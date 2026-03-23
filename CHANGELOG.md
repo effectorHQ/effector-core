@@ -99,7 +99,7 @@ Phase E: Robustness and ecosystem readiness.
 Phase D: Standards hardening and release preparation.
 
 ### Added
-- MIT LICENSE
+- Apache 2.0 LICENSE
 - `.gitignore`
 - `funding` field in `package.json`
 

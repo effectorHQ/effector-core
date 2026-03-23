@@ -14,3 +14,6 @@ node compile.js
 
 - `output/openai-agents-function-tool.json`
 
+## License
+
+This project is currently licensed under the Apache 2.0 License 。
