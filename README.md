@@ -1,7 +1,7 @@
 # @effectorhq/core
 
 [![npm version](https://img.shields.io/npm/v/@effectorhq/core.svg)](https://www.npmjs.com/package/@effectorhq/core)
-[![License: Apache 2.0](https://img.shields.io/badge/license-Apache-2.0-blue.svg)](LICENSE)
+
 <a href="https://awesome.re"><img src="https://awesome.re/badge.svg" alt="Awesome"></a>
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org)
 [![Zero Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](#zero-dependencies)
@@ -291,6 +291,4 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ## License
 
-[Apache-2.0](./LICENSE)
-
-This project is currently licensed under the Apache 2.0 License 。
+This project is currently licensed under the [Apache License, Version 2.0](LICENSE.md) 。

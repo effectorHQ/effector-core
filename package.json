@@ -1,7 +1,7 @@
 {
   "name": "@effectorhq/core",
   "version": "1.0.0",
-  "description": "The standard toolkit for typed AI agent tool interoperability — parse, validate, type-check, and compile agent tool definitions",
+  "description": "The standard toolkit for typed AI agent tool interoperability \u2014 parse, validate, type-check, and compile agent tool definitions",
   "type": "module",
   "main": "src/index.js",
   "types": "src/index.d.ts",
@@ -81,7 +81,7 @@
   },
   "files": [
     "src/",
-    "LICENSE",
+    "LICENSE.md",
     "README.md"
   ]
 }
