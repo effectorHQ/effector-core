@@ -6,6 +6,8 @@ export const TYPE_INCOMPATIBLE: string;
 export const VALIDATION_ERROR: string;
 export const COMPILE_TARGET_UNKNOWN: string;
 export const FILE_NOT_FOUND: string;
+export const PERMISSION_DENIED: string;
+export const DISCOVERY_NO_MATCH: string;
 
 /**
  * Structured error with code, context, and actionable suggestion.

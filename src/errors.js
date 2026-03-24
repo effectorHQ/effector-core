@@ -13,6 +13,8 @@ export const TYPE_INCOMPATIBLE = 'EFFECTOR_TYPE_INCOMPATIBLE';
 export const VALIDATION_ERROR = 'EFFECTOR_VALIDATION_ERROR';
 export const COMPILE_TARGET_UNKNOWN = 'EFFECTOR_COMPILE_TARGET_UNKNOWN';
 export const FILE_NOT_FOUND = 'EFFECTOR_FILE_NOT_FOUND';
+export const PERMISSION_DENIED = 'EFFECTOR_PERMISSION_DENIED';
+export const DISCOVERY_NO_MATCH = 'EFFECTOR_DISCOVERY_NO_MATCH';
 
 const SUGGESTIONS = {
   [TOML_PARSE_ERROR]: 'Check your effector.toml syntax. See https://github.com/effectorHQ/effector-core#effectortoml',
@@ -22,6 +24,8 @@ const SUGGESTIONS = {
   [VALIDATION_ERROR]: 'Run `effector-core validate .` to see all validation errors.',
   [COMPILE_TARGET_UNKNOWN]: 'Use listTargets() or `effector-core compile --help` to see available targets.',
   [FILE_NOT_FOUND]: 'Ensure the directory contains effector.toml and/or SKILL.md.',
+  [PERMISSION_DENIED]: 'The tool requires permissions not allowed by server config. Check --allow-network / --allow-subprocess flags.',
+  [DISCOVERY_NO_MATCH]: 'No skills match the type query. Try broader type names or check available types with effector_inspect.',
 };
 
 /**
