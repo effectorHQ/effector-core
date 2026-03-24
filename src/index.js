@@ -48,6 +48,7 @@ export {
   listTargets,
   registerTarget,
   unregisterTarget,
+  setTypeCatalog,
 } from './compiler-targets.js';
 
 // Fluent API

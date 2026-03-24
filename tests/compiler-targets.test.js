@@ -4,7 +4,7 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert';
-import { compile, listTargets } from '../src/compiler-targets.js';
+import { compile, listTargets, setTypeCatalog } from '../src/compiler-targets.js';
 
 const SAMPLE_DEF = {
   name: 'linear',
@@ -149,4 +149,134 @@ test('compile: normalizes CamelCase names', () => {
   const tool = JSON.parse(output);
 
   assert.strictEqual(tool.name, 'email_sender');
+});
+
+// ── Interface Type Expansion ────────────────────────────────
+
+const MINI_CATALOG = {
+  types: {
+    input: {
+      CodeDiff: {
+        category: 'code',
+        fields: { required: ['files'], optional: ['baseBranch', 'headBranch', 'repository'] },
+        description: 'A code diff between two states',
+      },
+      FilePath: {
+        category: 'primitive',
+        fields: { required: ['path'], optional: ['exists', 'type', 'mimeType'] },
+        description: 'A filesystem path',
+      },
+      String: {
+        category: 'primitive',
+        fields: { required: ['text'], optional: ['encoding'] },
+        description: 'Plain text input',
+      },
+    },
+    output: {},
+    context: {},
+  },
+  subtypeRelations: [],
+};
+
+test('compile: MCP expands interface.input into inputSchema when catalog set', () => {
+  setTypeCatalog(MINI_CATALOG);
+  const def = {
+    name: 'code-review',
+    description: 'Review code diffs',
+    interface: { input: 'CodeDiff', output: 'ReviewReport' },
+    permissions: {},
+  };
+  const tool = JSON.parse(compile(def, 'mcp'));
+
+  // Should have all CodeDiff fields
+  assert.ok(tool.inputSchema.properties.files, 'should have files property');
+  assert.ok(tool.inputSchema.properties.baseBranch, 'should have baseBranch property');
+  assert.ok(tool.inputSchema.properties.headBranch, 'should have headBranch property');
+  assert.ok(tool.inputSchema.properties.repository, 'should have repository property');
+
+  // files is required
+  assert.ok(tool.inputSchema.required.includes('files'));
+
+  // files should be array type
+  assert.strictEqual(tool.inputSchema.properties.files.type, 'array');
+  assert.ok(tool.inputSchema.properties.files.items);
+
+  // baseBranch should be string type
+  assert.strictEqual(tool.inputSchema.properties.baseBranch.type, 'string');
+
+  setTypeCatalog(null); // clean up
+});
+
+test('compile: MCP merges interface fields with envRead properties', () => {
+  setTypeCatalog(MINI_CATALOG);
+  const def = {
+    name: 'secure-review',
+    description: 'Secure code review',
+    interface: { input: 'CodeDiff', output: 'ReviewReport' },
+    permissions: { envRead: ['GITHUB_TOKEN'] },
+  };
+  const tool = JSON.parse(compile(def, 'mcp'));
+
+  // Should have both interface fields AND envRead
+  assert.ok(tool.inputSchema.properties.files, 'interface field present');
+  assert.ok(tool.inputSchema.properties.GITHUB_TOKEN, 'envRead field present');
+
+  // Required should include both
+  assert.ok(tool.inputSchema.required.includes('files'), 'interface required');
+  assert.ok(tool.inputSchema.required.includes('GITHUB_TOKEN'), 'envRead required');
+
+  setTypeCatalog(null);
+});
+
+test('compile: MCP without catalog still works (backward compatible)', () => {
+  setTypeCatalog(null);
+  const def = {
+    name: 'no-catalog-tool',
+    description: 'No catalog available',
+    interface: { input: 'CodeDiff', output: 'JSON' },
+    permissions: { envRead: ['API_KEY'] },
+  };
+  const tool = JSON.parse(compile(def, 'mcp'));
+
+  // Only envRead should appear (no expansion without catalog)
+  assert.ok(tool.inputSchema.properties.API_KEY);
+  assert.strictEqual(Object.keys(tool.inputSchema.properties).length, 1);
+  assert.deepStrictEqual(tool.inputSchema.required, ['API_KEY']);
+});
+
+test('compile: OpenAI Agents expands interface.input when catalog set', () => {
+  setTypeCatalog(MINI_CATALOG);
+  const def = {
+    name: 'file-search',
+    description: 'Search files',
+    interface: { input: 'FilePath', output: 'JSON' },
+    permissions: {},
+    skillContent: '## Search files',
+  };
+  const tool = JSON.parse(compile(def, 'openai-agents'));
+
+  assert.ok(tool.function.parameters.properties.path, 'should have path');
+  assert.ok(tool.function.parameters.properties.exists, 'should have exists');
+  assert.strictEqual(tool.function.parameters.properties.exists.type, 'boolean');
+  assert.ok(tool.function.parameters.required.includes('path'));
+
+  setTypeCatalog(null);
+});
+
+test('compile: LangChain expands interface.input when catalog set', () => {
+  setTypeCatalog(MINI_CATALOG);
+  const def = {
+    name: 'file-search',
+    description: 'Search files',
+    interface: { input: 'FilePath', output: 'JSON' },
+    permissions: {},
+    skillContent: '## Search files',
+  };
+  const output = compile(def, 'langchain');
+
+  assert.ok(output.includes('class FileSearchInput(BaseModel)'), 'should generate input class');
+  assert.ok(output.includes('path: str'), 'should have path field');
+  assert.ok(output.includes('exists:'), 'should have exists field');
+
+  setTypeCatalog(null);
 });
