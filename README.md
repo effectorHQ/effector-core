@@ -1,3 +1,10 @@
+> **📦 Consolidated.** This package is now part of [`effectorHQ/effector`](https://github.com/OpenClawHQ/effectorhq) → `packages/core/`.
+> All active development continues in the monorepo. This repository remains available for reference.
+>
+> Install: `npm install @effectorhq/core` (published from the monorepo)
+
+---
+
 # @effectorhq/core
 
 [![npm version](https://img.shields.io/npm/v/@effectorhq/core.svg)](https://www.npmjs.com/package/@effectorhq/core)
